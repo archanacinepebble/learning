@@ -10,25 +10,32 @@ export class UsersController {
     }
     @Get()
     getUsers() {
-       return this.userService.findUsers();
-
+      return this.userService.findUsers();
      }
 
     @Post()
     createUser(@Body() createUserDto: CreateUserDto) {
-        return this.userService.createUsers(createUserDto);
-     }
+      return this.userService.createUsers(createUserDto);
+    }
+
     @Put(':id')
     async updateUserById(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
      ) {
       await this.userService.updateUser(id, updateUserDto);
-  }
-  @Delete(':id')
-   async deleteUserById(@Param('id', ParseIntPipe) id: number ) {
-    await this.userService.deleteUser(id);
-  }
+    }
+
+    @Delete(':id')
+    async deleteUserById(@Param('id', ParseIntPipe) id: number ) {
+      await this.userService.deleteUser(id);
+    }
+
+    @Get('by/raw/query')
+    getUsersByRawQuery() {
+       return this.userService.findUsersByRawQuery();
+    }
+
 
 }
 

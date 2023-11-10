@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/typeorm/entities/User';
 import { CreateUserParams, UpdateUserParams } from 'src/utils/types';
+import { Connection } from 'mysql2';
 @Injectable()
 export class UsersService {
 
     constructor(@InjectRepository(User) private userRepository: Repository<User>,
+        @InjectConnection() private readonly connection: Connection
     ){
 
     }
@@ -27,6 +29,9 @@ export class UsersService {
 
     deleteUser(id: number) {
         return this.userRepository.delete(id);
-    
-        }
+    }
+
+    findUsersByRawQuery() {
+        return this.connection.query('SELECT * FROM users;');
+    }
 }
