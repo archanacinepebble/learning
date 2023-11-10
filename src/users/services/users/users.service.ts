@@ -7,6 +7,8 @@ import { Connection } from 'mysql2';
 @Injectable()
 export class UsersService {
 
+    resultPerPage = 1;
+
     constructor(@InjectRepository(User) private userRepository: Repository<User>,
         @InjectConnection() private readonly connection: Connection
     ){
@@ -33,5 +35,14 @@ export class UsersService {
 
     findUsersByRawQuery() {
         return this.connection.query('SELECT * FROM users;');
+    }
+
+    findUsersByPaginations(page: number) {
+        if(!page) page = 0;
+        let query = 'SELECT * FROM users';
+        let start = (page-1)*this.resultPerPage ;
+        let end = (page)*(this.resultPerPage-1) + this.resultPerPage;
+        query += " LIMIT "+start+","+end;
+        return this.connection.query(query);
     }
 }
