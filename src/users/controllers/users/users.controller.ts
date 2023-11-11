@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dtos';
+import { FilterDto } from 'src/users/dtos/Filter.dto';
 import { UpdateUserDto } from 'src/users/dtos/updateUser.dtos';
 import { UsersService } from 'src/users/services/users/users.service';
 
@@ -36,9 +37,9 @@ export class UsersController {
        return this.userService.findUsersByRawQuery();
     }
 
-    @Get('pagination')
-    getUsersByPaginations(@Query() query) {
-      return this.userService.findUsersByPaginations(query['page']);
+    @Post('pagination')
+    getUsersByPaginations(@Body() filterDto: FilterDto) {
+      return this.userService.findUsersByPaginations(filterDto);
     }
 
 }
