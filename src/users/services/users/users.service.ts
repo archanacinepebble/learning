@@ -5,6 +5,8 @@ import { User } from 'src/typeorm/entities/User';
 import { CreateUserParams, UpdateUserParams } from 'src/utils/types';
 import { Connection } from 'mysql2';
 import { FilterDto } from 'src/users/dtos/Filter.dto';
+import { AppDataSource } from 'src/utils/DataSource';
+
 @Injectable()
 export class UsersService {
 
@@ -42,5 +44,11 @@ export class UsersService {
         let query = 'SELECT * FROM users';
         query += " ORDER BY createdAt "+filterDto.order+" LIMIT "+filterDto.offset+","+filterDto.limit;
         return this.connection.query(query);
+    }
+
+    findUsersByPaginationsUsingDataSource(filterDto: FilterDto) {
+        let query = 'SELECT * FROM users';
+        query += " ORDER BY createdAt "+filterDto.order+" LIMIT "+filterDto.offset+","+filterDto.limit;
+        return AppDataSource.query(query);
     }
 }

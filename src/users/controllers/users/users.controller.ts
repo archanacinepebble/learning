@@ -42,5 +42,10 @@ export class UsersController {
       return this.userService.findUsersByPaginations(filterDto);
     }
 
+    @Post('pagination/datasource')
+    getUsersByPaginationsDataSource(@Body() filterDto: FilterDto) {
+      return this.userService.findUsersByPaginationsUsingDataSource(filterDto);
+    }
+
 }
 
